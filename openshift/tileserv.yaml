@@ -1,0 +1,53 @@
+apiVersion: apps.openshift.io/v1
+kind: Template
+metadata:
+  name: tileserv
+objects:
+  # pg_tileserv: 7800
+  # varnish: 8080
+  # outside: 80
+  - apiVersion: v1
+    kind: DeploymentConfig
+    spec:
+      replicas: 2
+      selector:
+        app: tilserv
+      strategy:
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: tileserv
+        spec:
+          containers:
+            - name: pg_tileserv
+              image: image-registry.apps.silver.devops.gov.bc.ca/e1e498-tools/pg_tileserv:latest
+              ports:
+                - containerPort: 7800
+                  protocol: TCP
+            - name: varnish
+              image: eeacms/varnish image-registry.apps.silver.devops.gov.bc.ca/e1e498-tools/varnish:latest
+              ports:
+                - containerPort: 80
+                  protocol: TCP
+  - apiVersion: v1
+    kind: Service
+    spec:
+      ports:
+        - name: 8080-tcp
+          protocol: TCP
+          port: 80
+          targetPort: 8080
+      selector:
+        name: pg_tileserv
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    spec:
+      host: tileserv_dev.apps.silver.devops.gov.bc.ca
+      port:
+        targetPort: 8080-tcp
+      to:
+        kind: Service
+        name: pg_tileserv
+      tls:
+        termination: edge
