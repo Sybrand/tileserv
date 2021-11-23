@@ -5,8 +5,9 @@
 https://blog.crunchydata.com/blog/production-postgis-vector-tiles-caching
 
 ## Assumptions
-You have the oc command line installed and you're logged in.
-You have docker installed localled.
+- You have the oc command line installed and you're logged in.
+- You have docker installed locally.
+- You have a postgres database in your target openshift environment that can be accessed by pg_tileserv
 ## Instructions
 
 ```bash
