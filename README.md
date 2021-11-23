@@ -1,7 +1,13 @@
 # tileserv
 
 ## Idea
-Easily spin up a vector tile server that will syncronize with some source
+Easily spin up a vector tile server that will syncronize with some source.
+
+### Components
+0. postgis (external).
+1. pg_tileserv - serves up vector tiles from postgis server.
+2. proxy server (varnish?) - caches responses.
+3. sync cronjob - updates database periodically.
 ## Reference
 https://blog.crunchydata.com/blog/production-postgis-vector-tiles-caching
 
